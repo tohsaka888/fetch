@@ -2,18 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-function hello() {
-  return <h1>hello</h1>
-}
 
-function Login(state,setState) {
-  setState(true)
-  console.log(state)
-}
-
-
-function App() {
-  const [loginState,setLoginState] = useState(false);
+function Login(props) {
   const [user,setUser] = useState('');
   const [pass,setPass] = useState('');
 
@@ -28,25 +18,35 @@ function App() {
       mode:"cors"
     })
     const data = await res.json();
-    console.log(data.login)
     if(data.login === 'ok'){
-      Login(loginState,setLoginState)
+      props.setState(true)
+      console.log(props.state)
     }
   }
+  
+  return (
+    <div>
+      <input type='text' name="user" onChange={(event)=>{setUser(event.target.value)}}></input>
+      <input type='password' name='password' onChange={(event)=>{setPass(event.target.value)}}></input>
+      <input type='submit' onClick={Send}></input>
+    </div>
+  )
+}
+
+
+function App() {
+  
+  const [loginState,setLoginState] = useState(false);
 
   return (
     <div className="App">
       <Router>
         <Route exact path='/'>
-          <div>
-            <input type='text' name="user" onChange={(event)=>{setUser(event.target.value)}}></input>
-            <input type='password' name='password' onChange={(event)=>{setPass(event.target.value)}}></input>
-            <input type='submit' onClick={Send}></input>
-          </div>
+          <Login state={loginState} setState={setLoginState}></Login>
         </Route>
       </Router>
       <Router>
-        <Route path='/login' component={hello}></Route>
+        <Route path='/login' component={Login}></Route>
       </Router>
     </div>
   );
