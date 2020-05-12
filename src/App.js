@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import './App.css';
-import { useHistory,BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-
-function hello () {
+function hello() {
   return <h1>hello</h1>
 }
 
+function Login(state,setState) {
+  setState(true)
+  console.log(state)
+}
+
+
 function App() {
-  const history = useHistory();
+  const [loginState,setLoginState] = useState(false);
   const [user,setUser] = useState('');
   const [pass,setPass] = useState('');
 
@@ -25,8 +30,7 @@ function App() {
     const data = await res.json();
     console.log(data.login)
     if(data.login === 'ok'){
-      console.log('ok');
-      history.push('/login')
+      Login(loginState,setLoginState)
     }
   }
 
@@ -34,11 +38,11 @@ function App() {
     <div className="App">
       <Router>
         <Route exact path='/'>
-        <div>
-          <input type='text' name="user" onChange={(event)=>{setUser(event.target.value)}}></input>
-          <input type='password' name='password' onChange={(event)=>{setPass(event.target.value)}}></input>
-          <input type='submit' onClick={Send}></input>
-        </div>
+          <div>
+            <input type='text' name="user" onChange={(event)=>{setUser(event.target.value)}}></input>
+            <input type='password' name='password' onChange={(event)=>{setPass(event.target.value)}}></input>
+            <input type='submit' onClick={Send}></input>
+          </div>
         </Route>
       </Router>
       <Router>
