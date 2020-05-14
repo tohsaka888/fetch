@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
-function Login(state,setState) {
+function Login(props) {
   const [user,setUser] = useState('');
   const [pass,setPass] = useState('');
 
@@ -19,8 +19,8 @@ function Login(state,setState) {
     })
     const data = await res.json();
     if(data.login === 'ok'){
-      setState(true)
-      console.log(state)
+      props.setState(true)
+      console.log(props.state)
     }
   }
   
