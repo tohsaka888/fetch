@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
-function Login(props) {
+function Login(state,setState) {
   const [user,setUser] = useState('');
   const [pass,setPass] = useState('');
 
@@ -19,8 +19,8 @@ function Login(props) {
     })
     const data = await res.json();
     if(data.login === 'ok'){
-      props.setState(true)
-      console.log(props.state)
+      setState(true)
+      console.log(state)
     }
   }
   
@@ -33,23 +33,38 @@ function Login(props) {
   )
 }
 
+function Hello () {
+  return <h1>hello</h1>
+}
+
 
 function App() {
-  
-  const [loginState,setLoginState] = useState(false);
 
-  return (
-    <div className="App">
+  const [loginState,setLoginState] = useState(false);
+  
+  if(loginState === false){
+    return (
       <Router>
-        <Route exact path='/'>
-          <Login state={loginState} setState={setLoginState}></Login>
+        <Route path='/login' exact component={Login}>
+          <Login state={loginState} setState={setLoginState} />
         </Route>
+        <Switch>
+          <Route path='/' exact component={Hello}></Route>
+        </Switch>
       </Router>
+    )
+  }else{
+    return (
       <Router>
-        <Route path='/login' component={Login}></Route>
+        <Route path='/login' component={Login}>
+          <Login state={loginState} setState={setLoginState} />
+        </Route>
+        <Switch>
+          <Route path='/' exact component={Login}></Route>
+        </Switch>
       </Router>
-    </div>
-  );
+    )
+  }
 }
 
 export default App;
